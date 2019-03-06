@@ -1,14 +1,26 @@
 {
-  "name": "TODO",
+  "name": "syntax",
   "version": "0.0.1",
-  "description": "TODO",
-  "author": "TODO",
-  "homepage": "TODO",
+  "description": "For use powerful JavaScript syntax for compile CSS instead legacy preprocessors: SASS, LESS, Stylus, etc.",
+  "author": "Nikolay Makhonin",
+  "homepage": "https://github.com/NikolayMakhonin/postcss-js-syntax",
   "bugs": {
-    "url": "TODO"
+    "url": "https://github.com/NikolayMakhonin/postcss-js-syntax/issues"
   },
   "license": "CC0-1.0",
-  "keywords": [],
+  "keywords": [
+    "postcss",
+    "js",
+    "jss",
+    "syntax",
+    "parser",
+    "plugin",
+    "css-in-js",
+    "cssinjs",
+    "css",
+    "preprocessor",
+    "javascript"
+  ],
   "files": [
     "dist/**",
     "env/mocha/*"
