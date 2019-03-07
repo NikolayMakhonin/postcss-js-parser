@@ -1,7 +1,7 @@
 /* eslint-disable object-property-newline,array-bracket-newline */
-import {jsToNodes} from '../../../../main/helpers/converter'
+import {jsToNodes} from '../../../../../main/helpers/convert/jsToNodes'
 
-describe('main > helpers > converter-jsToNodes', function () {
+describe('main > helpers > convert > jsToNodes', function () {
 	function createNode(name, valueOrNodes, level) {
 		if (valueOrNodes == null) {
 			return null

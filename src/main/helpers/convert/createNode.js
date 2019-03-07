@@ -1,5 +1,4 @@
 /* eslint-disable prefer-template,no-extra-parens */
-import Root from 'postcss/lib/root'
 import AtRule from 'postcss/lib/at-rule'
 import Rule from 'postcss/lib/rule'
 import Declaration from 'postcss/lib/declaration'
@@ -135,69 +134,6 @@ export function createNode(name, valueOrNodes, level) {
 	}
 }
 
-export function jsToNodes(jsObjectOrArray, createNodeFunc, level) {
-	const result = Array.from(jsToNodesGenerator(jsObjectOrArray, createNodeFunc, level))
-	if (result.length === 1) {
-		const value = result[0]
-		if (!Array.isArray(value) && (!value || typeof value !== 'object')) {
-			return value
-		}
-	}
-
-	return result
-}
-
-function* jsToNodesGenerator(jsObjectOrArray, createNodeFunc, level) {
-	if (jsObjectOrArray == null) {
-		yield jsObjectOrArray
-		return
-	}
-
-	if (!level) {
-		level = 0
-	}
-
-	if (Array.isArray(jsObjectOrArray)) {
-		for (const item of jsObjectOrArray) {
-			if (typeof item === 'string') {
-				const node = createNodeFunc(null, item, level)
-				if (node) {
-					yield node
-				}
-			} else if (item) {
-				yield* jsToNodesGenerator(item, createNodeFunc, level)
-			}
-		}
-		return
-	}
-
-	if (typeof jsObjectOrArray === 'object') {
-		const nextLevel = level + 1
-		for (const name in jsObjectOrArray) {
-			if (Object.prototype.hasOwnProperty.call(jsObjectOrArray, name)) {
-				const node = createNodeFunc(name, jsToNodes(jsObjectOrArray[name], createNodeFunc, nextLevel), level)
-				if (node) {
-					yield node
-				}
-			}
-		}
-		return
-	}
-
-	yield jsObjectOrArray
-}
-
-// export function jsToPostcss(jsObjectOrArray) {
-// 	const root = new Root()
-// 	root.raws = {
-// 		after    : '\n\t\t',
-// 		semicolon: false
-// 	}
-//
-// 	// Array.isArray(jsObject)
-// }
-
 export default {
-	createNode,
-	jsToNodes
+	createNode
 }

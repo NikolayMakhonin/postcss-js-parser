@@ -2,7 +2,7 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _converter = require("../../../../main/helpers/converter");
+var _createNode = require("../../../../../main/helpers/convert/createNode");
 
 var _atRule = _interopRequireDefault(require("postcss/lib/at-rule"));
 
@@ -13,9 +13,9 @@ var _declaration = _interopRequireDefault(require("postcss/lib/declaration"));
 var _comment = _interopRequireDefault(require("postcss/lib/comment"));
 
 /* eslint-disable object-property-newline,array-bracket-newline */
-describe('main > helpers > converter-createNode', function () {
-  function testCreateNode(name, valueOrArray, level, expectedNode) {
-    const node = (0, _converter.createNode)(name, valueOrArray, level);
+describe('main > helpers > convert > createNode', function () {
+  function testCreateNode(name, valueOrNodes, level, expectedNode) {
+    const node = (0, _createNode.createNode)(name, valueOrNodes, level);
     assert.deepStrictEqual(node, expectedNode);
   }
 
@@ -29,8 +29,8 @@ describe('main > helpers > converter-createNode', function () {
     // testCreateNode('prop', null, 0, null)
   });
   it('comment', function () {
-    assert.throws(() => (0, _converter.createNode)(null, '@', 0), Error);
-    assert.throws(() => (0, _converter.createNode)(null, '/', 0), Error);
+    assert.throws(() => (0, _createNode.createNode)(null, '@', 0), Error);
+    assert.throws(() => (0, _createNode.createNode)(null, '/', 0), Error);
     testCreateNode(null, '// comment text ', 0, Object.assign(new _comment.default(), {
       type: 'comment',
       text: 'comment text',
@@ -93,8 +93,8 @@ describe('main > helpers > converter-createNode', function () {
         between: ' '
       }
     }));
-    assert.throws(() => (0, _converter.createNode)('@import module\r\n.js ', 'x', 0), Error);
-    assert.throws(() => (0, _converter.createNode)('@import module\r\n.js ', {}, 0), Error);
+    assert.throws(() => (0, _createNode.createNode)('@import module\r\n.js ', 'x', 0), Error);
+    assert.throws(() => (0, _createNode.createNode)('@import module\r\n.js ', {}, 0), Error);
     testCreateNode('@import module\r\n.js ', null, 0, Object.assign(new _atRule.default(), {
       type: 'atrule',
       name: 'import',
@@ -128,7 +128,7 @@ describe('main > helpers > converter-createNode', function () {
         between: ' '
       }
     }));
-    testCreateNode('@import module\r\n.js ', [(0, _converter.createNode)(null, '//')], 0, Object.assign(new _atRule.default(), {
+    testCreateNode('@import module\r\n.js ', [(0, _createNode.createNode)(null, '//')], 0, Object.assign(new _atRule.default(), {
       type: 'atrule',
       name: 'import',
       params: 'module\r\n.js',
@@ -153,7 +153,7 @@ describe('main > helpers > converter-createNode', function () {
     testCreateNode('a-b:c .d, .e', undefined, 0, null);
     testCreateNode('a-b:c .d, .e', null, 0, null);
     testCreateNode('a-b:c .d, .e', [], 0, null);
-    testCreateNode('a-b:c .d, .e', [(0, _converter.createNode)(null, '//')], 0, Object.assign(new _rule.default(), {
+    testCreateNode('a-b:c .d, .e', [(0, _createNode.createNode)(null, '//')], 0, Object.assign(new _rule.default(), {
       type: 'rule',
       selector: 'a-b:c .d, .e',
       raws: {
@@ -172,7 +172,7 @@ describe('main > helpers > converter-createNode', function () {
         type: 'comment'
       })]
     }));
-    testCreateNode('a-b:c .d, .e', [(0, _converter.createNode)(null, '//')], 3, Object.assign(new _rule.default(), {
+    testCreateNode('a-b:c .d, .e', [(0, _createNode.createNode)(null, '//')], 3, Object.assign(new _rule.default(), {
       type: 'rule',
       selector: 'a-b:c .d, .e',
       raws: {

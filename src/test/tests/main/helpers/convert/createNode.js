@@ -1,13 +1,13 @@
 /* eslint-disable object-property-newline,array-bracket-newline */
-import {createNode} from '../../../../main/helpers/converter'
+import {createNode} from '../../../../../main/helpers/convert/createNode'
 import AtRule from 'postcss/lib/at-rule'
 import Rule from 'postcss/lib/rule'
 import Declaration from 'postcss/lib/declaration'
 import Comment from 'postcss/lib/comment'
 
-describe('main > helpers > converter-createNode', function () {
-	function testCreateNode(name, valueOrArray, level, expectedNode) {
-		const node = createNode(name, valueOrArray, level)
+describe('main > helpers > convert > createNode', function () {
+	function testCreateNode(name, valueOrNodes, level, expectedNode) {
+		const node = createNode(name, valueOrNodes, level)
 		assert.deepStrictEqual(node, expectedNode)
 	}
 

@@ -1,9 +1,6 @@
-"use strict";
-
-var _converter = require("../../../../main/helpers/converter");
-
 /* eslint-disable object-property-newline,array-bracket-newline */
-describe('main > helpers > converter-jsToNodes', function () {
+import { jsToNodes } from '../../../../../main/helpers/convert/jsToNodes';
+describe('main > helpers > convert > jsToNodes', function () {
   function createNode(name, valueOrNodes, level) {
     if (valueOrNodes == null) {
       return null;
@@ -11,29 +8,29 @@ describe('main > helpers > converter-jsToNodes', function () {
 
     if (!name) {
       return {
-        level,
+        level: level,
         comment: valueOrNodes
       };
     }
 
     if (Array.isArray(valueOrNodes)) {
       return {
-        level,
-        name,
+        level: level,
+        name: name,
         nodes: valueOrNodes
       };
     }
 
     return {
-      level,
-      name,
+      level: level,
+      name: name,
       value: valueOrNodes
     };
   }
 
   function testJsToNodes(jss, expectedNodes) {
-    const nodes = (0, _converter.jsToNodes)(jss, createNode);
-    assert.deepStrictEqual(nodes, expectedNodes, `JSS:\r\n${JSON.stringify(jss, null, 4)}\r\n\r\nActual: \r\n${JSON.stringify(nodes, null, 4)}\r\n\r\nExpected:\r\n${JSON.stringify(expectedNodes, null, 4)}`);
+    var nodes = jsToNodes(jss, createNode);
+    assert.deepStrictEqual(nodes, expectedNodes, "JSS:\r\n".concat(JSON.stringify(jss, null, 4), "\r\n\r\nActual: \r\n").concat(JSON.stringify(nodes, null, 4), "\r\n\r\nExpected:\r\n").concat(JSON.stringify(expectedNodes, null, 4)));
   }
 
   it('null', function () {
