@@ -5,6 +5,7 @@ import postcssParse from 'postcss/lib/parse'
 describe('main > main', function () {
 	it('postcssParse', function () {
 		const css = `
+		@import 'module.js';
 		@font-face {
 		
 		}

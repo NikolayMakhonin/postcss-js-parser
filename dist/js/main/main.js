@@ -5,16 +5,14 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.main = main;
 exports.default = void 0;
 
-var _helpers = _interopRequireDefault(require("./helpers/helpers"));
+var _stringify = _interopRequireDefault(require("./stringify"));
 
-function main(args) {
-  console.log(JSON.stringify(args), _helpers.default.test);
-}
+var _parse = _interopRequireDefault(require("./parse"));
 
 var _default = {
-  main
+  parse: _parse.default,
+  stringify: _stringify.default
 };
 exports.default = _default;
