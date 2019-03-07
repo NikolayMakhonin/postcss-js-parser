@@ -20,10 +20,10 @@
 [npm-url]: https://npmjs.org/package/postcss-js-syntax
 [node-version-image]: https://img.shields.io/node/v/postcss-js-syntax.svg
 [node-version-url]: https://nodejs.org/en/download/
-[travis-image]: https://travis-ci.org/NikolayMakhonin/postcss-js-syntax.svg?branch=helpers
-[travis-url]: https://travis-ci.org/NikolayMakhonin/postcss-js-syntax?branch=helpers
-[coveralls-image]: https://coveralls.io/repos/github/NikolayMakhonin/postcss-js-syntax/badge.svg?branch=helpers
-[coveralls-url]: https://coveralls.io/github/NikolayMakhonin/postcss-js-syntax?branch=helpers
+[travis-image]: https://travis-ci.org/NikolayMakhonin/postcss-js-syntax.svg
+[travis-url]: https://travis-ci.org/NikolayMakhonin/postcss-js-syntax
+[coveralls-image]: https://coveralls.io/repos/github/NikolayMakhonin/postcss-js-syntax/badge.svg
+[coveralls-url]: https://coveralls.io/github/NikolayMakhonin/postcss-js-syntax
 [downloads-image]: https://img.shields.io/npm/dm/postcss-js-syntax.svg
 [downloads-url]: https://npmjs.org/package/postcss-js-syntax
 [npm-url]: https://npmjs.org/package/postcss-js-syntax
