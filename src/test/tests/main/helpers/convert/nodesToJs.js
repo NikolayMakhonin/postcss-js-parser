@@ -22,7 +22,9 @@ describe('main > helpers > convert > nodesToJs', function () {
 
 	function testNodesToJs(jss, expectedNodes) {
 		const nodes = nodesToJs(jss, parseNode)
-		assert.deepStrictEqual(nodes, expectedNodes, `JSS:\r\n${JSON.stringify(jss, null, 4)}\r\n\r\nActual: \r\n${JSON.stringify(nodes, null, 4)}\r\n\r\nExpected:\r\n${JSON.stringify(expectedNodes, null, 4)}`)
+		const errorMessage = `JSS:\r\n${JSON.stringify(jss, null, 4)}\r\n\r\nActual: \r\n${JSON.stringify(nodes, null, 4)}\r\n\r\nExpected:\r\n${JSON.stringify(expectedNodes, null, 4)}`
+		assert.deepStrictEqual(nodes, expectedNodes, errorMessage)
+		assert.strictEqual(JSON.stringify(nodes), JSON.stringify(expectedNodes), errorMessage)
 	}
 
 	it('null', function () {

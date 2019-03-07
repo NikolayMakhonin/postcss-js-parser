@@ -9,6 +9,7 @@ describe('main > helpers > convert > parseNode', function () {
 	function testParseNode(node, expectedItem) {
 		const item = parseNode(node, expectedItem)
 		assert.deepStrictEqual(item, expectedItem)
+		assert.strictEqual(JSON.stringify(item), JSON.stringify(expectedItem))
 	}
 
 	it('null', function () {
@@ -55,7 +56,8 @@ describe('main > helpers > convert > parseNode', function () {
 			params: ' \n\t module\r\n.js \n\t',
 			nodes : []
 		}, {
-			value: '@import module\r\n.js'
+			name: '@import module\r\n.js',
+			value: []
 		})
 
 		testParseNode({

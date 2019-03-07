@@ -21,7 +21,7 @@ export function parseNode(node) {
 				name = null
 			}
 			
-			if (node.nodes && node.nodes.length) {
+			if (node.nodes) {
 				return {
 					name,
 					value: node.nodes

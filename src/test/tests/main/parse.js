@@ -6,11 +6,19 @@ import {stringify} from '../../../main/stringify'
 describe('main > parse', function () {
 	const css = `
 		@import 'module.js';
+		@font-face;
 		@font-face {
 		
 		}
 		@media(min-width: 500px) {
 		
+		}
+		@font-face {
+			color: #0f0;
+		}
+		@media(min-width: 500px) {
+			color: #0ff;
+      		font-size: 1px
 		}
 		:global(.x::placeholder) {
 			color: blue !important;
@@ -25,8 +33,14 @@ describe('main > parse', function () {
 	const js = [
 		"@import 'module.js'",
 		'@font-face',
-		'@media (min-width: 500px)',
 		{
+			'@font-face': {
+				color: '#0f0'
+			},
+			'@media (min-width: 500px)': {
+				color      : '#0ff',
+				'font-size': '1px'
+			},
 			':global(.x::placeholder)': {
 				color     : 'blue !important',
 				background: '-moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%)',
@@ -40,15 +54,36 @@ describe('main > parse', function () {
 		}
 	]
 
+	const postProcessCss = `
+@import 'module.js';
+@font-face;
+@font-face {
+	color: #0f0
+}
+@media (min-width: 500px) {
+	color: #0ff;
+	font-size: 1px
+}
+:global(.x::placeholder) {
+	color: blue !important;
+	background: -moz-linear-gradient(top, #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%);
+	.y {
+		/* Comment */
+		content: "text"
+	}
+}
+`
+
 	it('parse', function () {
 		const parsedPostcss = postcssParse(css)
 
 		const parsedJs = parse(parsedPostcss)
 
 		assert.deepStrictEqual(parsedJs, js)
+		assert.strictEqual(JSON.stringify(parsedJs), JSON.stringify(js))
 	})
 
-	xit('stringify', function () {
+	it('stringify', function () {
 		const stringifyPostcss = stringify(js)
 
 		const builder = []
@@ -57,6 +92,6 @@ describe('main > parse', function () {
 		})
 		const stringifyCss = builder.join('')
 		
-		assert.strictEqual(stringifyCss, css)
+		assert.strictEqual(stringifyCss, postProcessCss)
 	})
 })
