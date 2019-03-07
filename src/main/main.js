@@ -1,9 +1,7 @@
-import helpers from './helpers/helpers'
-
-export function main(args) {
-	console.log(JSON.stringify(args), helpers.test)
-}
+import stringify from './stringify'
+import parse from './parse'
 
 export default {
-	main
+	parse,
+	stringify
 }
