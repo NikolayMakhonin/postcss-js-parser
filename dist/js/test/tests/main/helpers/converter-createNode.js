@@ -40,6 +40,16 @@ describe('main > helpers > converter-createNode', function () {
         right: ' '
       }
     }));
+    testCreateNode(null, new String('// comment text '), 0, Object.assign(new _comment.default(), {
+      type: 'comment',
+      text: 'comment text',
+      raws: {
+        before: '\n',
+        left: ' ',
+        right: ' '
+      }
+    }));
+    testCreateNode(null, new String('\r\n\t '), 0, null);
     testCreateNode(null, '//\r\n\tcomment\r\n\ttext', 3, Object.assign(new _comment.default(), {
       type: 'comment',
       text: 'comment\r\n\ttext',
@@ -51,6 +61,16 @@ describe('main > helpers > converter-createNode', function () {
     }));
   });
   it('atrule', function () {
+    testCreateNode(null, '@import \r\n\t ', 0, Object.assign(new _atRule.default(), {
+      type: 'atrule',
+      name: 'import',
+      raws: {
+        after: '',
+        afterName: ' ',
+        before: '\n',
+        between: ' '
+      }
+    }));
     testCreateNode(null, '@import module\r\n.js ', 0, Object.assign(new _atRule.default(), {
       type: 'atrule',
       name: 'import',
@@ -195,6 +215,35 @@ describe('main > helpers > converter-createNode', function () {
       type: 'decl',
       prop: 'a-b:c .d, .e',
       value: '',
+      raws: {
+        before: '\n',
+        between: ':'
+      }
+    }));
+    testCreateNode('a-b:c .d, .e', ' \r!important\n\t ', 0, Object.assign(new _declaration.default(), {
+      type: 'decl',
+      prop: 'a-b:c .d, .e',
+      value: '',
+      important: true,
+      raws: {
+        before: '\n',
+        between: ':'
+      }
+    }));
+    testCreateNode('a-b:c .d, .e', ' \r! important\n\t ', 0, Object.assign(new _declaration.default(), {
+      type: 'decl',
+      prop: 'a-b:c .d, .e',
+      value: '! important',
+      raws: {
+        before: '\n',
+        between: ':'
+      }
+    }));
+    testCreateNode('a-b:c .d, .e', '\rx!important\n\t ', 0, Object.assign(new _declaration.default(), {
+      type: 'decl',
+      prop: 'a-b:c .d, .e',
+      value: 'x',
+      important: true,
       raws: {
         before: '\n',
         between: ':'

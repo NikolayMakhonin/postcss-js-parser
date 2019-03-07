@@ -31,7 +31,7 @@ function parseComment(str, level) {
 }
 
 function parseAtRule(str, level) {
-  var match = str.match(/^@([\0-\x08\x0E-\x1F!-\x9F\xA1-\u167F\u1681-\u1FFF\u200B-\u2027\u202A-\u202E\u2030-\u205E\u2060-\u2FFF\u3001-\uFEFE\uFF00-\uFFFF]+)[\t-\r \xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF]+([\0-\uFFFF]*?)[\t-\r \xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF]*$/);
+  var match = str.match(/^@([\0-\x08\x0E-\x1F!-\x9F\xA1-\u167F\u1681-\u1FFF\u200B-\u2027\u202A-\u202E\u2030-\u205E\u2060-\u2FFF\u3001-\uFEFE\uFF00-\uFFFF]+)([\t-\r \xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF]+([\0-\uFFFF]*?))?[\t-\r \xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF]*$/);
 
   if (!match) {
     return null;
@@ -41,8 +41,8 @@ function parseAtRule(str, level) {
   result.type = 'atrule';
   result.name = match[1];
 
-  if (match[2]) {
-    result.params = match[2];
+  if (match[3]) {
+    result.params = match[3];
   }
 
   result.raws = {
@@ -77,11 +77,6 @@ function parseDeclaration(name, value, level) {
   }
 
   var match = value.match(/^[\t-\r \xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF]*([\0-\uFFFF]*?)[\t-\r \xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF]*(!important)?[\t-\r \xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF]*$/);
-
-  if (!match[1] && match[1] !== '') {
-    return null;
-  }
-
   var result = new Declaration();
   result.type = 'decl';
   result.prop = name;
@@ -331,18 +326,18 @@ function jsToNodesGenerator(jsObjectOrArray, createNodeFunc, level) {
       }
     }
   }, _marked, null, [[9, 27, 31, 39], [32,, 34, 38]]);
-}
+} // export function jsToPostcss(jsObjectOrArray) {
+// 	const root = new Root()
+// 	root.raws = {
+// 		after    : '\n\t\t',
+// 		semicolon: false
+// 	}
+//
+// 	// Array.isArray(jsObject)
+// }
 
-export function jsToPostcss(jsObjectOrArray) {
-  var root = new Root();
-  root.raws = {
-    after: '\n\t\t',
-    semicolon: false // Array.isArray(jsObject)
 
-  };
-}
 export default {
   createNode: createNode,
-  jsToNodes: jsToNodes,
-  jsToPostcss: jsToPostcss
+  jsToNodes: jsToNodes
 };

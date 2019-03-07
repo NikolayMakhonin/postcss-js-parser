@@ -23,7 +23,7 @@ function parseComment(str, level) {
 }
 
 function parseAtRule(str, level) {
-	const match = str.match(/^@(\S+)\s+(.*?)\s*$/s)
+	const match = str.match(/^@(\S+)(\s+(.*?))?\s*$/s)
 	if (!match) {
 		return null
 	}
@@ -31,8 +31,8 @@ function parseAtRule(str, level) {
 	const result = new AtRule()
 	result.type = 'atrule'
 	result.name = match[1]
-	if (match[2]) {
-		result.params = match[2]
+	if (match[3]) {
+		result.params = match[3]
 	}
 	result.raws = {
 		before   : '\n'.padEnd(level + 1, '\t'),
@@ -68,9 +68,6 @@ function parseDeclaration(name, value, level) {
 	}
 
 	const match = value.match(/^\s*(.*?)\s*(!important)?\s*$/s)
-	if (!match[1] && match[1] !== '') {
-		return null
-	}
 
 	const result = new Declaration()
 	result.type = 'decl'

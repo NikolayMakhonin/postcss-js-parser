@@ -7,7 +7,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.createNode = createNode;
 exports.jsToNodes = jsToNodes;
-exports.jsToPostcss = jsToPostcss;
 exports.default = void 0;
 
 var _root = _interopRequireDefault(require("postcss/lib/root"));
@@ -40,7 +39,7 @@ function parseComment(str, level) {
 }
 
 function parseAtRule(str, level) {
-  const match = str.match(/^@([\0-\x08\x0E-\x1F!-\x9F\xA1-\u167F\u1681-\u1FFF\u200B-\u2027\u202A-\u202E\u2030-\u205E\u2060-\u2FFF\u3001-\uFEFE\uFF00-\uFFFF]+)[\t-\r \xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF]+([\0-\uFFFF]*?)[\t-\r \xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF]*$/);
+  const match = str.match(/^@([\0-\x08\x0E-\x1F!-\x9F\xA1-\u167F\u1681-\u1FFF\u200B-\u2027\u202A-\u202E\u2030-\u205E\u2060-\u2FFF\u3001-\uFEFE\uFF00-\uFFFF]+)([\t-\r \xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF]+([\0-\uFFFF]*?))?[\t-\r \xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF]*$/);
 
   if (!match) {
     return null;
@@ -50,8 +49,8 @@ function parseAtRule(str, level) {
   result.type = 'atrule';
   result.name = match[1];
 
-  if (match[2]) {
-    result.params = match[2];
+  if (match[3]) {
+    result.params = match[3];
   }
 
   result.raws = {
@@ -86,11 +85,6 @@ function parseDeclaration(name, value, level) {
   }
 
   const match = value.match(/^[\t-\r \xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF]*([\0-\uFFFF]*?)[\t-\r \xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF]*(!important)?[\t-\r \xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF]*$/);
-
-  if (!match[1] && match[1] !== '') {
-    return null;
-  }
-
   const result = new _declaration.default();
   result.type = 'decl';
   result.prop = name;
@@ -224,20 +218,19 @@ function* jsToNodesGenerator(jsObjectOrArray, createNodeFunc, level) {
   }
 
   yield jsObjectOrArray;
-}
+} // export function jsToPostcss(jsObjectOrArray) {
+// 	const root = new Root()
+// 	root.raws = {
+// 		after    : '\n\t\t',
+// 		semicolon: false
+// 	}
+//
+// 	// Array.isArray(jsObject)
+// }
 
-function jsToPostcss(jsObjectOrArray) {
-  const root = new _root.default();
-  root.raws = {
-    after: '\n\t\t',
-    semicolon: false // Array.isArray(jsObject)
-
-  };
-}
 
 var _default = {
   createNode,
-  jsToNodes,
-  jsToPostcss
+  jsToNodes
 };
 exports.default = _default;
