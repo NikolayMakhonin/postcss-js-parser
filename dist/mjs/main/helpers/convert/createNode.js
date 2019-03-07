@@ -1,11 +1,10 @@
 /* eslint-disable prefer-template,no-extra-parens */
-import Root from 'postcss/lib/root';
 import AtRule from 'postcss/lib/at-rule';
 import Rule from 'postcss/lib/rule';
 import Declaration from 'postcss/lib/declaration';
 import Comment from 'postcss/lib/comment';
 
-function parseComment(str, level) {
+function createComment(str, level) {
   var match = str.match(/^\/[\*\/]([\0-\uFFFF]*)$/);
 
   if (!match) {
@@ -23,7 +22,7 @@ function parseComment(str, level) {
   return result;
 }
 
-function parseAtRule(str, level) {
+function createAtRule(str, level) {
   var match = str.match(/^@([\0-\x08\x0E-\x1F!-\x9F\xA1-\u167F\u1681-\u1FFF\u200B-\u2027\u202A-\u202E\u2030-\u205E\u2060-\u2FFF\u3001-\uFEFE\uFF00-\uFFFF]+)([\t-\r \xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF]+([\0-\uFFFF]*?))?[\t-\r \xA0\u1680\u2000-\u200A\u2028\u2029\u202F\u205F\u3000\uFEFF]*$/);
 
   if (!match) {
@@ -47,7 +46,7 @@ function parseAtRule(str, level) {
   return result;
 }
 
-function parseRule(name, level) {
+function createRule(name, level) {
   var result = new Rule();
   result.type = 'rule';
   result.selector = name;
@@ -60,9 +59,9 @@ function parseRule(name, level) {
   return result;
 }
 
-function parseDeclaration(name, value, level) {
+function createDeclaration(name, value, level) {
   if (value != null) {
-    value = value.toString().trim();
+    value = value.toString();
   }
 
   if (!value && value !== '') {
@@ -102,13 +101,13 @@ export function createNode(name, valueOrNodes, level) {
       return null;
     }
 
-    var comment = parseComment(valueOrNodes, level);
+    var comment = createComment(valueOrNodes, level);
 
     if (comment) {
       return comment;
     }
 
-    var atRule = parseAtRule(valueOrNodes, level);
+    var atRule = createAtRule(valueOrNodes, level);
 
     if (atRule) {
       return atRule;
@@ -116,7 +115,7 @@ export function createNode(name, valueOrNodes, level) {
 
     throw new Error('You should use one of these syntaxes: "//<comment>" or "@<at-rule> params"');
   } else {
-    var _atRule = parseAtRule(name, level);
+    var _atRule = createAtRule(name, level);
 
     if (_atRule) {
       if (valueOrNodes) {
@@ -137,12 +136,12 @@ export function createNode(name, valueOrNodes, level) {
         return null;
       }
 
-      var rule = parseRule(name, level);
+      var rule = createRule(name, level);
       rule.nodes = valueOrNodes;
       return rule;
     }
 
-    return parseDeclaration(name, valueOrNodes, level);
+    return createDeclaration(name, valueOrNodes, level);
   }
 }
 export default {

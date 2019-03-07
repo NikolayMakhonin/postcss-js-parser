@@ -4,7 +4,7 @@ import Rule from 'postcss/lib/rule'
 import Declaration from 'postcss/lib/declaration'
 import Comment from 'postcss/lib/comment'
 
-function parseComment(str, level) {
+function createComment(str, level) {
 	const match = str.match(/^\/[/*](.*)$/s)
 	if (!match) {
 		return null
@@ -21,7 +21,7 @@ function parseComment(str, level) {
 	return result
 }
 
-function parseAtRule(str, level) {
+function createAtRule(str, level) {
 	const match = str.match(/^@(\S+)(\s+(.*?))?\s*$/s)
 	if (!match) {
 		return null
@@ -43,7 +43,7 @@ function parseAtRule(str, level) {
 	return result
 }
 
-function parseRule(name, level) {
+function createRule(name, level) {
 	const result = new Rule()
 	result.type = 'rule'
 	result.selector = name
@@ -57,9 +57,9 @@ function parseRule(name, level) {
 	return result
 }
 
-function parseDeclaration(name, value, level) {
+function createDeclaration(name, value, level) {
 	if (value != null) {
-		value = value.toString().trim()
+		value = value.toString()
 	}
 
 	if (!value && value !== '') {
@@ -96,19 +96,19 @@ export function createNode(name, valueOrNodes, level) {
 			return null
 		}
 
-		const comment = parseComment(valueOrNodes, level)
+		const comment = createComment(valueOrNodes, level)
 		if (comment) {
 			return comment
 		}
 
-		const atRule = parseAtRule(valueOrNodes, level)
+		const atRule = createAtRule(valueOrNodes, level)
 		if (atRule) {
 			return atRule
 		}
 
 		throw new Error('You should use one of these syntaxes: "//<comment>" or "@<at-rule> params"')
 	} else {
-		const atRule = parseAtRule(name, level)
+		const atRule = createAtRule(name, level)
 		if (atRule) {
 			if (valueOrNodes) {
 				if (!Array.isArray(valueOrNodes)) {
@@ -125,12 +125,12 @@ export function createNode(name, valueOrNodes, level) {
 			if (!valueOrNodes.length) {
 				return null
 			}
-			const rule = parseRule(name, level)
+			const rule = createRule(name, level)
 			rule.nodes = valueOrNodes
 			return rule
 		}
 
-		return parseDeclaration(name, valueOrNodes, level)
+		return createDeclaration(name, valueOrNodes, level)
 	}
 }
 
