@@ -89,6 +89,7 @@
     "ncat": "^2.0.5",
     "nyc": "^13.3.0",
     "postcss": "^7.0.14",
+    "require-from-memory": "0.0.1",
     "rollup": "^1.2.2",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-commonjs": "^9.2.0",

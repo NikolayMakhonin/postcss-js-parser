@@ -18,6 +18,8 @@ var _postcss = _interopRequireDefault(require("postcss"));
 
 var _simpleJsStyle = _interopRequireDefault(require("../../assets/simpleJsStyle"));
 
+var _requireFromMemory = require("require-from-memory");
+
 describe('main > postcssToJs', function () {
   function jsToCss(jsObjectOrArray) {
     const stringifyPostcss = (0, _convertPostcssJs.jsToPostcss)(jsObjectOrArray);
@@ -166,6 +168,21 @@ describe('main > postcssToJs', function () {
     const result = await postcssInstance.process(js, {
       syntax: _main.default,
       from: filePath
+    });
+    assert.deepStrictEqual(JSON.parse(result.css), _simpleJsStyle.default);
+    assert.strictEqual(result.css, JSON.stringify(_simpleJsStyle.default, null, 4));
+  });
+  it('postcss syntax es6 from string', async function () {
+    const filePath = _path.default.resolve(__dirname, '../../assets/simpleJsStyle-es6.js');
+
+    const js = await getFileContent(filePath);
+
+    const newFilePath = _path.default.resolve(__dirname, '../../assets/simpleJsStyle-es6-from-string.js');
+
+    const result = await postcssInstance.process(js, {
+      syntax: _main.default,
+      from: newFilePath,
+      requireFromString: _requireFromMemory.requireFromString
     });
     assert.deepStrictEqual(JSON.parse(result.css), _simpleJsStyle.default);
     assert.strictEqual(result.css, JSON.stringify(_simpleJsStyle.default, null, 4));

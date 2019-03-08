@@ -6,7 +6,7 @@ import fs from 'fs'
 import path from 'path'
 import postcss from 'postcss'
 import simpleJsStyle from '../../assets/simpleJsStyle'
-import {requireFromString} from '../../src/requireFromString'
+import {requireFromString} from 'require-from-memory'
 
 describe('main > postcssToJs', function () {
 	function jsToCss(jsObjectOrArray) {

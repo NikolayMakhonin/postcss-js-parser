@@ -10,10 +10,10 @@ var _parseNode = require("./helpers/convert/parseNode");
 
 var _convertPostcssJs = require("./helpers/convert/convertPostcssJs");
 
+/* eslint-disable global-require */
 function parse(jsContent, options) {
-  // ignore jsContent and use standard load module for support babel and other features and for avoid many errors
   // eslint-disable-next-line global-require
-  let jsModule = require(options.from);
+  let jsModule = options.requireFromString ? options.requireFromString(jsContent, options.from) : require(options.from);
 
   if (jsModule.__esModule === true && typeof jsModule.default !== 'undefined') {
     jsModule = jsModule.default;

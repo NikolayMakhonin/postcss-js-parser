@@ -45,6 +45,8 @@ const css = postcss([...your plugins])
 console.log(css)
 ```
 
+I recommend to use `require-from-memory` npm module
+
 CSS styles in JavaScript format represent an simple object:
 
 `my-style.js`

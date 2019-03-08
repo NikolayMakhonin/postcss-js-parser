@@ -8,6 +8,7 @@ import fs from 'fs';
 import path from 'path';
 import postcss from 'postcss';
 import simpleJsStyle from '../../assets/simpleJsStyle';
+import { requireFromString } from 'require-from-memory';
 describe('main > postcssToJs', function () {
   function jsToCss(jsObjectOrArray) {
     var stringifyPostcss = jsToPostcss(jsObjectOrArray);
@@ -58,25 +59,25 @@ describe('main > postcssToJs', function () {
   function _cssFileToJs() {
     _cssFileToJs = _asyncToGenerator(
     /*#__PURE__*/
-    _regeneratorRuntime.mark(function _callee4(cssFilePath) {
+    _regeneratorRuntime.mark(function _callee5(cssFilePath) {
       var css;
-      return _regeneratorRuntime.wrap(function _callee4$(_context4) {
+      return _regeneratorRuntime.wrap(function _callee5$(_context5) {
         while (1) {
-          switch (_context4.prev = _context4.next) {
+          switch (_context5.prev = _context5.next) {
             case 0:
-              _context4.next = 2;
+              _context5.next = 2;
               return getFileContent(cssFilePath);
 
             case 2:
-              css = _context4.sent;
-              return _context4.abrupt("return", cssToJs(css));
+              css = _context5.sent;
+              return _context5.abrupt("return", cssToJs(css));
 
             case 4:
             case "end":
-              return _context4.stop();
+              return _context5.stop();
           }
         }
-      }, _callee4);
+      }, _callee5);
     }));
     return _cssFileToJs.apply(this, arguments);
   }
@@ -209,5 +210,41 @@ describe('main > postcssToJs', function () {
         }
       }
     }, _callee3);
+  })));
+  it('postcss syntax es6 from string',
+  /*#__PURE__*/
+  _asyncToGenerator(
+  /*#__PURE__*/
+  _regeneratorRuntime.mark(function _callee4() {
+    var filePath, js, newFilePath, result;
+    return _regeneratorRuntime.wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            filePath = path.resolve(__dirname, '../../assets/simpleJsStyle-es6.js');
+            _context4.next = 3;
+            return getFileContent(filePath);
+
+          case 3:
+            js = _context4.sent;
+            newFilePath = path.resolve(__dirname, '../../assets/simpleJsStyle-es6-from-string.js');
+            _context4.next = 7;
+            return postcssInstance.process(js, {
+              syntax: syntax,
+              from: newFilePath,
+              requireFromString: requireFromString
+            });
+
+          case 7:
+            result = _context4.sent;
+            assert.deepStrictEqual(JSON.parse(result.css), simpleJsStyle);
+            assert.strictEqual(result.css, JSON.stringify(simpleJsStyle, null, 4));
+
+          case 10:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4);
   })));
 });
