@@ -33,7 +33,13 @@ const css = postcss([...your plugins])
         '', // this parameter will be ignored by js parser
         {
             from: require.resolve('./myJsStyle.js'), // required absolute path to real file
-            parser: jsSyntax.parser
+            parser: jsSyntax.parser,
+            requireFromString: function(code, filename) {
+            	// you can provide your own requireFromString function
+            	
+            	// default:
+            	return require(filename)
+            }
         }
 
 console.log(css)
