@@ -60,10 +60,10 @@ describe('main > helpers > convert > createNode', function () {
       type: 'atrule',
       name: 'import',
       raws: {
-        after: '',
-        afterName: ' ',
+        after: '\n',
+        afterName: '',
         before: '\n',
-        between: ' '
+        between: ''
       }
     }));
     testCreateNode(null, '@import module\r\n.js ', 0, Object.assign(new AtRule(), {
@@ -71,10 +71,10 @@ describe('main > helpers > convert > createNode', function () {
       name: 'import',
       params: 'module\r\n.js',
       raws: {
-        after: '',
+        after: '\n',
         afterName: ' ',
         before: '\n',
-        between: ' '
+        between: ''
       }
     }));
     testCreateNode(null, '@import  module\r\n.js ', 3, Object.assign(new AtRule(), {
@@ -82,10 +82,10 @@ describe('main > helpers > convert > createNode', function () {
       name: 'import',
       params: 'module\r\n.js',
       raws: {
-        after: '',
+        after: '\n\t\t\t',
         afterName: ' ',
         before: '\n\t\t\t',
-        between: ' '
+        between: ''
       }
     }));
     assert.throws(function () {
@@ -99,10 +99,10 @@ describe('main > helpers > convert > createNode', function () {
       name: 'import',
       params: 'module\r\n.js',
       raws: {
-        after: '',
+        after: '\n',
         afterName: ' ',
         before: '\n',
-        between: ' '
+        between: ''
       }
     }));
     testCreateNode('@import module\r\n.js ', '', 0, Object.assign(new AtRule(), {
@@ -110,18 +110,19 @@ describe('main > helpers > convert > createNode', function () {
       name: 'import',
       params: 'module\r\n.js',
       raws: {
-        after: '',
+        after: '\n',
         afterName: ' ',
         before: '\n',
-        between: ' '
+        between: ''
       }
     }));
     testCreateNode('@import module\r\n.js ', [], 0, Object.assign(new AtRule(), {
       type: 'atrule',
       name: 'import',
       params: 'module\r\n.js',
+      nodes: [],
       raws: {
-        after: '',
+        after: '\n',
         afterName: ' ',
         before: '\n',
         between: ' '
@@ -132,7 +133,7 @@ describe('main > helpers > convert > createNode', function () {
       name: 'import',
       params: 'module\r\n.js',
       raws: {
-        after: '',
+        after: '\n',
         afterName: ' ',
         before: '\n',
         between: ' '
@@ -156,7 +157,7 @@ describe('main > helpers > convert > createNode', function () {
       type: 'rule',
       selector: 'a-b:c .d, .e',
       raws: {
-        after: '',
+        after: '\n',
         before: '\n',
         between: ' ',
         semicolon: false
@@ -175,7 +176,7 @@ describe('main > helpers > convert > createNode', function () {
       type: 'rule',
       selector: 'a-b:c .d, .e',
       raws: {
-        after: '',
+        after: '\n\t\t\t',
         before: '\n\t\t\t',
         between: ' ',
         semicolon: false
@@ -198,7 +199,7 @@ describe('main > helpers > convert > createNode', function () {
       value: '[object Object]',
       raws: {
         before: '\n',
-        between: ':'
+        between: ': '
       }
     }));
     testCreateNode('a-b:c .d, .e', '', 0, Object.assign(new Declaration(), {
@@ -207,7 +208,7 @@ describe('main > helpers > convert > createNode', function () {
       value: '',
       raws: {
         before: '\n',
-        between: ':'
+        between: ': '
       }
     }));
     testCreateNode('a-b:c .d, .e', ' \r\n\t ', 0, Object.assign(new Declaration(), {
@@ -216,7 +217,7 @@ describe('main > helpers > convert > createNode', function () {
       value: '',
       raws: {
         before: '\n',
-        between: ':'
+        between: ': '
       }
     }));
     testCreateNode('a-b:c .d, .e', ' \r!important\n\t ', 0, Object.assign(new Declaration(), {
@@ -226,7 +227,7 @@ describe('main > helpers > convert > createNode', function () {
       important: true,
       raws: {
         before: '\n',
-        between: ':'
+        between: ': '
       }
     }));
     testCreateNode('a-b:c .d, .e', ' \r! important\n\t ', 0, Object.assign(new Declaration(), {
@@ -235,7 +236,7 @@ describe('main > helpers > convert > createNode', function () {
       value: '! important',
       raws: {
         before: '\n',
-        between: ':'
+        between: ': '
       }
     }));
     testCreateNode('a-b:c .d, .e', '\rx!important\n\t ', 0, Object.assign(new Declaration(), {
@@ -245,7 +246,7 @@ describe('main > helpers > convert > createNode', function () {
       important: true,
       raws: {
         before: '\n',
-        between: ':'
+        between: ': '
       }
     }));
   });

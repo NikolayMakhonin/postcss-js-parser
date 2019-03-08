@@ -1,13 +1,15 @@
-import {parse} from '../../../main/parse'
+import syntax from '../../../../../main/main'
 import postcssParse from 'postcss/lib/parse'
 import postcssStringify from 'postcss/lib/stringify'
-import {stringify} from '../../../main/stringify'
+import {postcssToJs, jsToPostcss} from '../../../../../main/helpers/convert/convertPostcssJs'
 import fs from 'fs'
 import path from 'path'
+import postcss from 'postcss'
+import simpleJsStyle from '../../assets/simpleJsStyle'
 
-describe('main > parse', function () {
+describe('main > postcssToJs', function () {
 	function jsToCss(jsObjectOrArray) {
-		const stringifyPostcss = stringify(jsObjectOrArray)
+		const stringifyPostcss = jsToPostcss(jsObjectOrArray)
 
 		const builder = []
 		postcssStringify(stringifyPostcss, o => {
@@ -19,24 +21,44 @@ describe('main > parse', function () {
 
 	function cssToJs(css) {
 		const parsedPostcss = postcssParse(css)
-		return parse(parsedPostcss)
+		return postcssToJs(parsedPostcss)
 	}
 
-	async function cssFileToJs(cssFilePath) {
-		const css = await new Promise((resolve, reject) => fs.readFile(
-			path.resolve(__dirname, cssFilePath),
+	function getFileContent(filePath) {
+		return new Promise((resolve, reject) => fs.readFile(
+			path.resolve(__dirname, filePath),
 			function read(err, data) {
 				if (err) {
 					reject(err)
 					return
 				}
 
-				resolve(data)
+				resolve(data.toString('utf-8'))
 			}
 		))
+	}
+
+	async function cssFileToJs(cssFilePath) {
+		const css = await getFileContent(cssFilePath)
 
 		return cssToJs(css)
 	}
+
+	// async function jsFileToCss(cssFilePath) {
+	// 	const css = await new Promise((resolve, reject) => fs.readFile(
+	// 		path.resolve(__dirname, cssFilePath),
+	// 		function read(err, data) {
+	// 			if (err) {
+	// 				reject(err)
+	// 				return
+	// 			}
+	//
+	// 			resolve(data)
+	// 		}
+	// 	))
+	//
+	// 	return cssToJs(css)
+	// }
 
 	const cssBefore = `
 		@import 'module.js';
@@ -108,17 +130,17 @@ describe('main > parse', function () {
 }
 `
 
-	it('parse', function () {
+	it('postcssToJs', function () {
 		const parsedPostcss = postcssParse(cssBefore)
 
-		const parsedJs = parse(parsedPostcss)
+		const parsedJs = postcssToJs(parsedPostcss)
 
 		assert.deepStrictEqual(parsedJs, jsAfter)
 		assert.strictEqual(JSON.stringify(parsedJs), JSON.stringify(jsAfter))
 	})
 
-	it('stringify', function () {
-		const stringifyPostcss = stringify(jsAfter)
+	it('jsToPostcss', function () {
+		const stringifyPostcss = jsToPostcss(jsAfter)
 
 		const builder = []
 		postcssStringify(stringifyPostcss, o => {
@@ -130,10 +152,36 @@ describe('main > parse', function () {
 	})
 
 	it('facebook css', async function () {
-		const js = await cssFileToJs('assets/facebook.css')
+		const js = await cssFileToJs('../../assets/facebook.css')
 		const css = jsToCss(js)
 		const js2 = cssToJs(css)
 		assert.deepStrictEqual(js2, js)
 		assert.strictEqual(JSON.stringify(js2, null, 4), JSON.stringify(js, null, 4))
+	})
+
+	const postcssInstance = postcss()
+
+	it('postcss syntax', async function () {
+		const filePath = path.resolve(__dirname, '../../assets/simpleJsStyle.js')
+		const js = await getFileContent(filePath)
+		const result = await postcssInstance.process(js, {
+			syntax,
+			from: filePath
+		})
+
+		assert.deepStrictEqual(JSON.parse(result.css), simpleJsStyle)
+		assert.strictEqual(result.css, JSON.stringify(simpleJsStyle, null, 4))
+	})
+
+	it('postcss syntax es6', async function () {
+		const filePath = path.resolve(__dirname, '../../assets/simpleJsStyle-es6.js')
+		const js = await getFileContent(filePath)
+		const result = await postcssInstance.process(js, {
+			syntax,
+			from: filePath
+		})
+
+		assert.deepStrictEqual(JSON.parse(result.css), simpleJsStyle)
+		assert.strictEqual(result.css, JSON.stringify(simpleJsStyle, null, 4))
 	})
 })

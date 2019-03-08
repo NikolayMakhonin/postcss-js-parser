@@ -33,7 +33,8 @@ describe('main > helpers > convert > jsToNodes', function () {
 
   function testJsToNodes(jss, expectedNodes) {
     const nodes = (0, _jsToNodes.jsToNodes)(jss, createNode);
-    assert.deepStrictEqual(nodes, expectedNodes, `JSS:\r\n${JSON.stringify(jss, null, 4)}\r\n\r\nActual: \r\n${JSON.stringify(nodes, null, 4)}\r\n\r\nExpected:\r\n${JSON.stringify(expectedNodes, null, 4)}`);
+    const errorMessage = `JSS:\r\n${JSON.stringify(jss, null, 4)}\r\n\r\nActual: \r\n${JSON.stringify(nodes, null, 4)}\r\n\r\nExpected:\r\n${JSON.stringify(expectedNodes, null, 4)}`;
+    assert.deepStrictEqual(nodes, expectedNodes, errorMessage);
   }
 
   it('null', function () {

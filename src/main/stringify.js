@@ -1,16 +1,9 @@
-import {jsToNodes} from './helpers/convert/jsToNodes'
-import {createNode} from './helpers/convert/createNode'
-import Root from 'postcss/lib/root'
+import {postcssToJs} from './helpers/convert/convertPostcssJs'
 
-export function stringify(content, options) {
-	const root = new Root()
-	root.nodes = jsToNodes(content, createNode)
-	root.raws = {
-		after    : '\n',
-		semicolon: false
-	}
+export function stringify(node, builder) {
+	const js = postcssToJs(node)
 
-	return root
+	builder(JSON.stringify(js, null, 4), node)
 }
 
 export default stringify

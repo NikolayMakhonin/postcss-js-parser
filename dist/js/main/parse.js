@@ -6,8 +6,20 @@ Object.defineProperty(exports, "__esModule", {
 exports.parse = parse;
 exports.default = void 0;
 
-function parse(content, options) {
-  console.log(content, options);
+var _parseNode = require("./helpers/convert/parseNode");
+
+var _convertPostcssJs = require("./helpers/convert/convertPostcssJs");
+
+function parse(jsContent, options) {
+  // ignore jsContent and use standard load module for support babel and other features and for avoid many errors
+  // eslint-disable-next-line global-require
+  let jsModule = require(options.from);
+
+  if (jsModule.__esModule === true && typeof jsModule.default !== 'undefined') {
+    jsModule = jsModule.default;
+  }
+
+  return (0, _convertPostcssJs.jsToPostcss)(jsModule, _parseNode.parseNode);
 }
 
 var _default = parse;

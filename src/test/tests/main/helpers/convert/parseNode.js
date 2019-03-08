@@ -1,9 +1,5 @@
 /* eslint-disable object-property-newline,array-bracket-newline */
 import {parseNode} from '../../../../../main/helpers/convert/parseNode'
-import AtRule from 'postcss/lib/at-rule'
-import Rule from 'postcss/lib/rule'
-import Declaration from 'postcss/lib/declaration'
-import Comment from 'postcss/lib/comment'
 
 describe('main > helpers > convert > parseNode', function () {
 	function testParseNode(node, expectedItem) {
@@ -56,7 +52,7 @@ describe('main > helpers > convert > parseNode', function () {
 			params: ' \n\t module\r\n.js \n\t',
 			nodes : []
 		}, {
-			name: '@import module\r\n.js',
+			name : '@import module\r\n.js',
 			value: []
 		})
 

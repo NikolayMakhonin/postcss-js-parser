@@ -30,7 +30,8 @@ describe('main > helpers > convert > jsToNodes', function () {
 
   function testJsToNodes(jss, expectedNodes) {
     var nodes = jsToNodes(jss, createNode);
-    assert.deepStrictEqual(nodes, expectedNodes, "JSS:\r\n".concat(JSON.stringify(jss, null, 4), "\r\n\r\nActual: \r\n").concat(JSON.stringify(nodes, null, 4), "\r\n\r\nExpected:\r\n").concat(JSON.stringify(expectedNodes, null, 4)));
+    var errorMessage = "JSS:\r\n".concat(JSON.stringify(jss, null, 4), "\r\n\r\nActual: \r\n").concat(JSON.stringify(nodes, null, 4), "\r\n\r\nExpected:\r\n").concat(JSON.stringify(expectedNodes, null, 4));
+    assert.deepStrictEqual(nodes, expectedNodes, errorMessage);
   }
 
   it('null', function () {

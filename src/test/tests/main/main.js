@@ -3,8 +3,10 @@ import postcss from 'postcss'
 import postcssParse from 'postcss/lib/parse'
 
 describe('main > main', function () {
-	it('postcssParse', function () {
+	const postcssInstance = postcss()
 
+	it('postcss', function () {
+		postcssInstance.process()
 	})
 
 	it('base', function () {

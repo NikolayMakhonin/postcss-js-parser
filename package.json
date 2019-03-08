@@ -1,5 +1,5 @@
 {
-  "name": "syntax",
+  "name": "postcss-js-syntax",
   "version": "0.0.1",
   "description": "For use powerful JavaScript syntax for compile CSS instead legacy preprocessors: SASS, LESS, Stylus, etc.",
   "author": "Nikolay Makhonin",

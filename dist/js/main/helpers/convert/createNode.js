@@ -45,17 +45,18 @@ function createAtRule(str, level) {
   const result = new _atRule.default();
   result.type = 'atrule';
   result.name = match[1];
+  result.raws = {
+    before: '\n'.padEnd(level + 1, '\t'),
+    after: '\n'.padEnd(level + 1, '\t'),
+    afterName: '',
+    between: ''
+  };
 
   if (match[3]) {
     result.params = match[3];
+    result.raws.afterName = ' ';
   }
 
-  result.raws = {
-    before: '\n'.padEnd(level + 1, '\t'),
-    after: '',
-    afterName: ' ',
-    between: ' '
-  };
   return result;
 }
 
@@ -65,7 +66,7 @@ function createRule(name, level) {
   result.selector = name;
   result.raws = {
     before: '\n'.padEnd(level + 1, '\t'),
-    after: '',
+    after: '\n'.padEnd(level + 1, '\t'),
     between: ' ',
     semicolon: false
   };
@@ -93,7 +94,7 @@ function createDeclaration(name, value, level) {
 
   result.raws = {
     before: '\n'.padEnd(level + 1, '\t'),
-    between: ':'
+    between: ': '
   };
   return result;
 }
@@ -136,9 +137,8 @@ function createNode(name, valueOrNodes, level) {
           throw new Error('@at-rule content must be an array or an object, but was specified: ' + valueOrNodes);
         }
 
-        if (valueOrNodes.length) {
-          atRule.nodes = valueOrNodes;
-        }
+        atRule.nodes = valueOrNodes;
+        atRule.raws.between = ' ';
       }
 
       return atRule;

@@ -1,22 +1,13 @@
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 var _parseNode = require("../../../../../main/helpers/convert/parseNode");
-
-var _atRule = _interopRequireDefault(require("postcss/lib/at-rule"));
-
-var _rule = _interopRequireDefault(require("postcss/lib/rule"));
-
-var _declaration = _interopRequireDefault(require("postcss/lib/declaration"));
-
-var _comment = _interopRequireDefault(require("postcss/lib/comment"));
 
 /* eslint-disable object-property-newline,array-bracket-newline */
 describe('main > helpers > convert > parseNode', function () {
   function testParseNode(node, expectedItem) {
     const item = (0, _parseNode.parseNode)(node, expectedItem);
     assert.deepStrictEqual(item, expectedItem);
+    assert.strictEqual(JSON.stringify(item), JSON.stringify(expectedItem));
   }
 
   it('null', function () {
@@ -68,7 +59,8 @@ describe('main > helpers > convert > parseNode', function () {
       params: ' \n\t module\r\n.js \n\t',
       nodes: []
     }, {
-      value: '@import module\r\n.js'
+      name: '@import module\r\n.js',
+      value: []
     });
     testParseNode({
       type: 'atrule',
