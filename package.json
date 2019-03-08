@@ -10,16 +10,18 @@
   "license": "CC0-1.0",
   "keywords": [
     "postcss",
+    "javascript",
     "js",
     "jss",
+    "json",
+    "postcss-syntax",
     "syntax",
     "parser",
     "plugin",
     "css-in-js",
     "cssinjs",
     "css",
-    "preprocessor",
-    "javascript"
+    "preprocessor"
   ],
   "files": [
     "dist/**",
