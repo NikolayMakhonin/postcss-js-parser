@@ -5,6 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.createSource = createSource;
 exports.createNode = createNode;
 exports.default = void 0;
 
@@ -18,7 +19,7 @@ var _comment = _interopRequireDefault(require("postcss/lib/comment"));
 
 /* eslint-disable prefer-template,no-extra-parens */
 // eslint-disable-next-line no-unused-vars
-function getSource(name, valueOrNodes) {
+function createSource(name, valueOrNodes) {
   // const obj = name
   // 	? {[name]: valueOrNodes}
   // 	: valueOrNodes
@@ -128,7 +129,7 @@ function createNode(name, valueOrNodes, level) {
   const node = _createNode(name, valueOrNodes, level);
 
   if (node) {
-    node.source = getSource(name, valueOrNodes);
+    node.source = createSource(name, valueOrNodes);
   }
 
   return node;

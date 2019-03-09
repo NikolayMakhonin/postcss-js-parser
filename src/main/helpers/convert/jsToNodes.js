@@ -1,13 +1,15 @@
 /* eslint-disable prefer-template,no-extra-parens */
 
-function addParentToChildNodes(node) {
+export function addParentToChildNodes(node) {
 	if (!node || !node.nodes) {
 		return
 	}
 
 	for (const child of node.nodes) {
-		child.parent = node
-		addParentToChildNodes(child)
+		if (!child.parent) {
+			child.parent = node
+			addParentToChildNodes(child)
+		}
 	}
 }
 

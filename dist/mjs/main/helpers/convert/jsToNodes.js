@@ -6,7 +6,7 @@ var _marked =
 _regeneratorRuntime.mark(jsToNodesGenerator);
 
 /* eslint-disable prefer-template,no-extra-parens */
-function addParentToChildNodes(node) {
+export function addParentToChildNodes(node) {
   if (!node || !node.nodes) {
     return;
   }
@@ -18,8 +18,11 @@ function addParentToChildNodes(node) {
   try {
     for (var _iterator = node.nodes[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
       var child = _step.value;
-      child.parent = node;
-      addParentToChildNodes(child);
+
+      if (!child.parent) {
+        child.parent = node;
+        addParentToChildNodes(child);
+      }
     }
   } catch (err) {
     _didIteratorError = true;
@@ -36,7 +39,6 @@ function addParentToChildNodes(node) {
     }
   }
 }
-
 export function jsToNodes(jsObjectOrArray, createNodeFunc, level) {
   var result = Array.from(jsToNodesGenerator(jsObjectOrArray, createNodeFunc, level));
 

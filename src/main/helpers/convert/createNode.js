@@ -5,7 +5,7 @@ import Declaration from 'postcss/lib/declaration'
 import Comment from 'postcss/lib/comment'
 
 // eslint-disable-next-line no-unused-vars
-function getSource(name, valueOrNodes) {
+export function createSource(name, valueOrNodes) {
 	// const obj = name
 	// 	? {[name]: valueOrNodes}
 	// 	: valueOrNodes
@@ -113,7 +113,7 @@ function createDeclaration(name, value, level) {
 export function createNode(name, valueOrNodes, level) {
 	const node = _createNode(name, valueOrNodes, level)
 	if (node) {
-		node.source = getSource(name, valueOrNodes)
+		node.source = createSource(name, valueOrNodes)
 	}
 	return node
 }

@@ -36,6 +36,8 @@ function jsToPostcss(jsArrayOrObject) {
     after: '\n',
     semicolon: false
   };
+  root.source = (0, _createNode.createSource)(null, root);
+  (0, _jsToNodes.addParentToChildNodes)(root);
   return root;
 }
 

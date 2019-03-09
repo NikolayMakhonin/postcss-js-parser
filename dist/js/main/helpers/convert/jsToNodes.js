@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.addParentToChildNodes = addParentToChildNodes;
 exports.jsToNodes = jsToNodes;
 exports.default = void 0;
 
@@ -13,8 +14,10 @@ function addParentToChildNodes(node) {
   }
 
   for (const child of node.nodes) {
-    child.parent = node;
-    addParentToChildNodes(child);
+    if (!child.parent) {
+      child.parent = node;
+      addParentToChildNodes(child);
+    }
   }
 }
 

@@ -1,7 +1,7 @@
 import { nodesToJs } from './nodesToJs';
 import { parseNode } from './parseNode';
-import { jsToNodes } from './jsToNodes';
-import { createNode } from './createNode';
+import { addParentToChildNodes, jsToNodes } from './jsToNodes';
+import { createNode, createSource } from './createNode';
 import Root from 'postcss/lib/root';
 export function postcssToJs(postcssNodeOrArray) {
   if (postcssNodeOrArray.type === 'root') {
@@ -19,6 +19,8 @@ export function jsToPostcss(jsArrayOrObject) {
     after: '\n',
     semicolon: false
   };
+  root.source = createSource(null, root);
+  addParentToChildNodes(root);
   return root;
 }
 export default {
