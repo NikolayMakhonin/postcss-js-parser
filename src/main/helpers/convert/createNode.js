@@ -4,6 +4,31 @@ import Rule from 'postcss/lib/rule'
 import Declaration from 'postcss/lib/declaration'
 import Comment from 'postcss/lib/comment'
 
+function getSource(name, valueOrNodes) {
+	// const obj = name
+	// 	? {[name]: valueOrNodes}
+	// 	: valueOrNodes
+	//
+	// const css = obj && typeof obj === 'object'
+	// 	? JSON.stringify(obj, null, 4)
+	// 	: obj
+
+	return {
+		input: {
+			// css, // disable for improve performance
+			hasBOM: false
+		},
+		start: {
+			line  : 0,
+			column: 0
+		},
+		end: {
+			line  : 0,
+			column: 0
+		}
+	}
+}
+
 function createComment(str, level) {
 	const match = str.match(/^\/[/*](.*)$/s)
 	if (!match) {
@@ -85,6 +110,14 @@ function createDeclaration(name, value, level) {
 }
 
 export function createNode(name, valueOrNodes, level) {
+	const node = _createNode(name, valueOrNodes, level)
+	if (node) {
+		node.source = getSource(name, valueOrNodes)
+	}
+	return node
+}
+
+function _createNode(name, valueOrNodes, level) {
 	if (!name) {
 		if (!valueOrNodes) {
 			return null

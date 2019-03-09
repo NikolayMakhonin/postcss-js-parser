@@ -17,6 +17,30 @@ var _declaration = _interopRequireDefault(require("postcss/lib/declaration"));
 var _comment = _interopRequireDefault(require("postcss/lib/comment"));
 
 /* eslint-disable prefer-template,no-extra-parens */
+function getSource(name, valueOrNodes) {
+  // const obj = name
+  // 	? {[name]: valueOrNodes}
+  // 	: valueOrNodes
+  //
+  // const css = obj && typeof obj === 'object'
+  // 	? JSON.stringify(obj, null, 4)
+  // 	: obj
+  return {
+    input: {
+      // css, // disable for improve performance
+      hasBOM: false
+    },
+    start: {
+      line: 0,
+      column: 0
+    },
+    end: {
+      line: 0,
+      column: 0
+    }
+  };
+}
+
 function createComment(str, level) {
   const match = str.match(/^\/[\*\/]([\0-\uFFFF]*)$/);
 
@@ -100,6 +124,16 @@ function createDeclaration(name, value, level) {
 }
 
 function createNode(name, valueOrNodes, level) {
+  const node = _createNode(name, valueOrNodes, level);
+
+  if (node) {
+    node.source = getSource(name, valueOrNodes);
+  }
+
+  return node;
+}
+
+function _createNode(name, valueOrNodes, level) {
   if (!name) {
     if (!valueOrNodes) {
       return null;

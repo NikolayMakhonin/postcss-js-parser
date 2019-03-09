@@ -31,9 +31,27 @@ describe('main > helpers > convert > jsToNodes', function () {
     };
   }
 
+  function removeParents(node) {
+    if (node) {
+      if (Array.isArray(node)) {
+        for (const child of node) {
+          removeParents(child);
+        }
+      } else {
+        if (node.parent) {
+          node.parent = true;
+        }
+
+        removeParents(node.nodes);
+      }
+    }
+
+    return node;
+  }
+
   function testJsToNodes(jss, expectedNodes) {
     const nodes = (0, _jsToNodes.jsToNodes)(jss, createNode);
-    const errorMessage = `JSS:\r\n${JSON.stringify(jss, null, 4)}\r\n\r\nActual: \r\n${JSON.stringify(nodes, null, 4)}\r\n\r\nExpected:\r\n${JSON.stringify(expectedNodes, null, 4)}`;
+    const errorMessage = `JSS:\r\n${JSON.stringify(jss, null, 4)}\r\n\r\nActual: \r\n${JSON.stringify(removeParents(nodes), null, 4)}\r\n\r\nExpected:\r\n${JSON.stringify(removeParents(expectedNodes), null, 4)}`;
     assert.deepStrictEqual(nodes, expectedNodes, errorMessage);
   }
 
@@ -116,7 +134,8 @@ describe('main > helpers > convert > jsToNodes', function () {
       name: 'prop',
       nodes: [{
         level: 1,
-        comment: 'comment'
+        comment: 'comment',
+        parent: true
       }]
     }, {
       level: 0,
@@ -124,7 +143,8 @@ describe('main > helpers > convert > jsToNodes', function () {
       nodes: [{
         level: 1,
         name: 'prop3',
-        value: 'value3'
+        value: 'value3',
+        parent: true
       }]
     }]);
   });
@@ -143,7 +163,8 @@ describe('main > helpers > convert > jsToNodes', function () {
       name: 'prop',
       nodes: [{
         level: 1,
-        comment: 'comment'
+        comment: 'comment',
+        parent: true
       }]
     }, {
       level: 0,
@@ -154,12 +175,15 @@ describe('main > helpers > convert > jsToNodes', function () {
         nodes: [{
           level: 2,
           name: 'prop3',
-          value: 'value3'
+          value: 'value3',
+          parent: true
         }, {
           level: 2,
           name: 'prop4',
-          value: 'value4'
-        }]
+          value: 'value4',
+          parent: true
+        }],
+        parent: true
       }]
     }]);
   });

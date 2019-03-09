@@ -6,20 +6,50 @@ import Declaration from 'postcss/lib/declaration'
 import Comment from 'postcss/lib/comment'
 
 describe('main > helpers > convert > createNode', function () {
+	function addSource(node) {
+		if (!node) {
+			return
+		}
+
+		node.source = {
+			input: {
+				// css, // disable for improve performance
+				hasBOM: false
+			},
+			start: {
+				line  : 0,
+				column: 0
+			},
+			end: {
+				line  : 0,
+				column: 0
+			}
+		}
+
+		if (!node.nodes) {
+			return
+		}
+
+		for (const child of node.nodes) {
+			addSource(child)
+		}
+	}
+
 	function testCreateNode(name, valueOrNodes, level, expectedNode) {
+		addSource(expectedNode)
 		const node = createNode(name, valueOrNodes, level)
 		assert.deepStrictEqual(node, expectedNode)
 	}
 
 	it('null', function () {
-		testCreateNode(undefined, undefined, 0, null)
-		testCreateNode(null, null, 0, null)
-		testCreateNode(null, undefined, 0, null)
-		testCreateNode(undefined, null, 0, null)
-		testCreateNode(null, '', 0, null)
-		testCreateNode(undefined, '', 0, null)
-		// testCreateNode('prop', undefined, 0, null)
-		// testCreateNode('prop', null, 0, null)
+		testCreateNode(undefined, undefined, 0, null, null)
+		testCreateNode(null, null, 0, null, null)
+		testCreateNode(null, undefined, 0, null, null)
+		testCreateNode(undefined, null, 0, null, null)
+		testCreateNode(null, '', 0, null, null)
+		testCreateNode(undefined, '', 0, null, null)
+		// testCreateNode('prop', undefined, 0, null, null)
+		// testCreateNode('prop', null, 0, null, null)
 	})
 
 	it('comment', function () {
@@ -113,8 +143,8 @@ describe('main > helpers > convert > createNode', function () {
 			}
 		))
 
-		assert.throws(() => createNode('@import module\r\n.js ', 'x', 0), Error)
-		assert.throws(() => createNode('@import module\r\n.js ', {}, 0), Error)
+		assert.throws(() => createNode('@import module\r\n.js ', 'x', null, 0), Error)
+		assert.throws(() => createNode('@import module\r\n.js ', {}, null, 0), Error)
 		testCreateNode('@import module\r\n.js ', null, 0, Object.assign(
 			new AtRule(),
 			{

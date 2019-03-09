@@ -28,9 +28,47 @@ describe('main > helpers > convert > jsToNodes', function () {
     };
   }
 
+  function removeParents(node) {
+    if (node) {
+      if (Array.isArray(node)) {
+        var _iteratorNormalCompletion = true;
+        var _didIteratorError = false;
+        var _iteratorError = undefined;
+
+        try {
+          for (var _iterator = node[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+            var child = _step.value;
+            removeParents(child);
+          }
+        } catch (err) {
+          _didIteratorError = true;
+          _iteratorError = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion && _iterator.return != null) {
+              _iterator.return();
+            }
+          } finally {
+            if (_didIteratorError) {
+              throw _iteratorError;
+            }
+          }
+        }
+      } else {
+        if (node.parent) {
+          node.parent = true;
+        }
+
+        removeParents(node.nodes);
+      }
+    }
+
+    return node;
+  }
+
   function testJsToNodes(jss, expectedNodes) {
     var nodes = jsToNodes(jss, createNode);
-    var errorMessage = "JSS:\r\n".concat(JSON.stringify(jss, null, 4), "\r\n\r\nActual: \r\n").concat(JSON.stringify(nodes, null, 4), "\r\n\r\nExpected:\r\n").concat(JSON.stringify(expectedNodes, null, 4));
+    var errorMessage = "JSS:\r\n".concat(JSON.stringify(jss, null, 4), "\r\n\r\nActual: \r\n").concat(JSON.stringify(removeParents(nodes), null, 4), "\r\n\r\nExpected:\r\n").concat(JSON.stringify(removeParents(expectedNodes), null, 4));
     assert.deepStrictEqual(nodes, expectedNodes, errorMessage);
   }
 
@@ -113,7 +151,8 @@ describe('main > helpers > convert > jsToNodes', function () {
       name: 'prop',
       nodes: [{
         level: 1,
-        comment: 'comment'
+        comment: 'comment',
+        parent: true
       }]
     }, {
       level: 0,
@@ -121,7 +160,8 @@ describe('main > helpers > convert > jsToNodes', function () {
       nodes: [{
         level: 1,
         name: 'prop3',
-        value: 'value3'
+        value: 'value3',
+        parent: true
       }]
     }]);
   });
@@ -140,7 +180,8 @@ describe('main > helpers > convert > jsToNodes', function () {
       name: 'prop',
       nodes: [{
         level: 1,
-        comment: 'comment'
+        comment: 'comment',
+        parent: true
       }]
     }, {
       level: 0,
@@ -151,12 +192,15 @@ describe('main > helpers > convert > jsToNodes', function () {
         nodes: [{
           level: 2,
           name: 'prop3',
-          value: 'value3'
+          value: 'value3',
+          parent: true
         }, {
           level: 2,
           name: 'prop4',
-          value: 'value4'
-        }]
+          value: 'value4',
+          parent: true
+        }],
+        parent: true
       }]
     }]);
   });

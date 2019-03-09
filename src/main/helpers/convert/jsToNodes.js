@@ -1,12 +1,28 @@
 /* eslint-disable prefer-template,no-extra-parens */
 
+function addParentToChildNodes(node) {
+	if (!node || !node.nodes) {
+		return
+	}
+
+	for (const child of node.nodes) {
+		child.parent = node
+		addParentToChildNodes(child)
+	}
+}
+
 export function jsToNodes(jsObjectOrArray, createNodeFunc, level) {
 	const result = Array.from(jsToNodesGenerator(jsObjectOrArray, createNodeFunc, level))
 	if (result.length === 1) {
 		const value = result[0]
 		if (!Array.isArray(value) && (!value || typeof value !== 'object')) {
+			addParentToChildNodes(value)
 			return value
 		}
+	}
+
+	for (const node of result) {
+		addParentToChildNodes(node)
 	}
 
 	return result
