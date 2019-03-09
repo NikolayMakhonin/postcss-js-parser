@@ -13,8 +13,8 @@ export function addParentToChildNodes(node) {
 	}
 }
 
-export function jsToNodes(jsObjectOrArray, createNodeFunc, level) {
-	const result = Array.from(jsToNodesGenerator(jsObjectOrArray, createNodeFunc, level))
+export function jsToNodes(jsObjectOrArray, createNodeFunc, level, addedObjects) {
+	const result = Array.from(jsToNodesGenerator(jsObjectOrArray, createNodeFunc, level, addedObjects))
 	if (result.length === 1) {
 		const value = result[0]
 		if (!Array.isArray(value) && (!value || typeof value !== 'object')) {
@@ -30,44 +30,58 @@ export function jsToNodes(jsObjectOrArray, createNodeFunc, level) {
 	return result
 }
 
-function* jsToNodesGenerator(jsObjectOrArray, createNodeFunc, level) {
+function* jsToNodesGenerator(jsObjectOrArray, createNodeFunc, level, addedObjects) {
 	if (jsObjectOrArray == null) {
 		yield jsObjectOrArray
 		return
 	}
 
-	if (!level) {
-		level = 0
-	}
-
-	if (Array.isArray(jsObjectOrArray)) {
-		for (const item of jsObjectOrArray) {
-			if (typeof item === 'string') {
-				const node = createNodeFunc(null, item, level)
-				if (node) {
-					yield node
-				}
-			} else if (item) {
-				yield* jsToNodesGenerator(item, createNodeFunc, level)
-			}
+	if (addedObjects) {
+		if (addedObjects.has(jsObjectOrArray)) {
+			throw new Error('Detect circular structure on: ' + jsObjectOrArray)
 		}
-		return
+	} else {
+		addedObjects = new Set()
 	}
 
-	if (typeof jsObjectOrArray === 'object') {
-		const nextLevel = level + 1
-		for (const name in jsObjectOrArray) {
-			if (Object.prototype.hasOwnProperty.call(jsObjectOrArray, name)) {
-				const node = createNodeFunc(name, jsToNodes(jsObjectOrArray[name], createNodeFunc, nextLevel), level)
-				if (node) {
-					yield node
+	addedObjects.add(jsObjectOrArray)
+
+	try {
+		if (!level) {
+			level = 0
+		}
+
+		if (Array.isArray(jsObjectOrArray)) {
+			for (const item of jsObjectOrArray) {
+				if (typeof item === 'string') {
+					const node = createNodeFunc(null, item, level)
+					if (node) {
+						yield node
+					}
+				} else if (item) {
+					yield* jsToNodesGenerator(item, createNodeFunc, level, addedObjects)
 				}
 			}
+			return
 		}
-		return
-	}
 
-	yield jsObjectOrArray
+		if (typeof jsObjectOrArray === 'object') {
+			const nextLevel = level + 1
+			for (const name in jsObjectOrArray) {
+				if (Object.prototype.hasOwnProperty.call(jsObjectOrArray, name)) {
+					const node = createNodeFunc(name, jsToNodes(jsObjectOrArray[name], createNodeFunc, nextLevel, addedObjects), level)
+					if (node) {
+						yield node
+					}
+				}
+			}
+			return
+		}
+
+		yield jsObjectOrArray
+	} finally {
+		addedObjects.delete(jsObjectOrArray)
+	}
 }
 
 export default {

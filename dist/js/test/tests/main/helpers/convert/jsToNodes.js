@@ -187,4 +187,19 @@ describe('main > helpers > convert > jsToNodes', function () {
       }]
     }]);
   });
+  it('Detect circular structure', function () {
+    const jss = {
+      prop1: [{
+        prop2: {
+          prop3: []
+        }
+      }]
+    };
+    jss.prop1[1] = jss.prop1[0].prop2;
+    (0, _jsToNodes.jsToNodes)(jss, createNode);
+    jss.prop1[1] = jss.prop1[0];
+    (0, _jsToNodes.jsToNodes)(jss, createNode);
+    jss.prop1[1].prop2.prop3[1] = jss;
+    assert.throws(() => (0, _jsToNodes.jsToNodes)(jss, createNode), Error);
+  });
 });
