@@ -23,30 +23,6 @@ Styles written in JavaScript are not so convenient, but when extending even a sm
 
 You can use your JS modules for compile CSS files.
 
-One possible use case:
-```
-import postcss from 'postcss'
-import jsSyntax from 'postcss-js-syntax'
-
-const css = postcss([...your plugins])
-    .process(
-        '', // this parameter will be ignored by js parser
-        {
-            from: require.resolve('./myJsStyle.js'), // required absolute path to real file
-            parser: jsSyntax.parser,
-            requireFromString: function(code, filename) {
-            	// you can provide your own requireFromString function
-            	
-            	// default:
-            	return require(filename)
-            }
-        }
-
-console.log(css)
-```
-
-I recommend to use `require-from-memory` npm module
-
 CSS styles in JavaScript format represent an simple object:
 
 `my-style.js`
@@ -72,18 +48,50 @@ module.exports = [
         ".selector3": {
             color: "#0f0",
             
-            ".sub-selector": { // for your other preprocessors
-                content: '"quots is required for this CSS property"'
+            ".sub-selector": { // you can use postcss-nested plugin here
+                content: '"quotes is required for this CSS property"'
             }
         }
     }
 ]
 ```
 
-You can also use ES6 modules with babel, because JS styles connect as usual modules with the `require` method in the same context in which PostCSS was launched:
+One possible use case:
 ```
+import postcss from 'postcss'
+import jsSyntax from 'postcss-js-syntax'
+
+const css = postcss([...your plugins])
+    .process(
+        '', // this parameter will be ignored by js parser
+        {
+            from: require.resolve('./myJsStyle.js'), // required absolute path to real file
+            parser: jsSyntax.parser,
+            requireFromString: function(code, filename) {
+            	// you can provide your own requireFromString function
+            	
+            	// default:
+            	return require(filename)
+            }
+        }
+
+console.log(css)
+```
+
+I recommend to use [`require-from-memory` npm module](https://www.npmjs.com/package/require-from-memory) in `requireFromString` option, because it allows you to use ES6 modules with [babel](https://babeljs.io/) like this:
+```
+import myModule './my-module.js'
+import myNodeModule 'my-node-module'
+
 export default [
-    ... your JS style
+    ...myModule.baseStyles({fontSize: "5px"}), // mixin equivalent
+    {
+    	...myNodeModule?.myCssClasses, // see @babel/plugin-proposal-optional-chaining
+    	.override-selector {
+    		color: myNodeModule?.colors?.primary, // if color == null it will not be added to CSS
+    		content: myNodeModule.myContent?.surroundWithQuotes()
+    	}
+    }
 ]
 ``` 
 

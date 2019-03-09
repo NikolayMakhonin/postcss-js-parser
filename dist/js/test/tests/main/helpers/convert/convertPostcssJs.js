@@ -187,4 +187,19 @@ describe('main > postcssToJs', function () {
     assert.deepStrictEqual(JSON.parse(result.css), _simpleJsStyle.default);
     assert.strictEqual(result.css, JSON.stringify(_simpleJsStyle.default, null, 4));
   });
+  it('postcss syntax es6 from string and exist path', async function () {
+    const filePath = _path.default.resolve(__dirname, '../../assets/simpleJsStyle-es6.js');
+
+    const js = await getFileContent(filePath);
+
+    const newFilePath = _path.default.resolve(__dirname, '../../assets/simpleJsStyle-es6.svelte.js');
+
+    const result = await postcssInstance.process(js, {
+      syntax: _main.default,
+      from: newFilePath,
+      requireFromString: _requireFromMemory.requireFromString
+    });
+    assert.deepStrictEqual(JSON.parse(result.css), _simpleJsStyle.default);
+    assert.strictEqual(result.css, JSON.stringify(_simpleJsStyle.default, null, 4));
+  });
 });

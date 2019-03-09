@@ -59,25 +59,25 @@ describe('main > postcssToJs', function () {
   function _cssFileToJs() {
     _cssFileToJs = _asyncToGenerator(
     /*#__PURE__*/
-    _regeneratorRuntime.mark(function _callee5(cssFilePath) {
+    _regeneratorRuntime.mark(function _callee6(cssFilePath) {
       var css;
-      return _regeneratorRuntime.wrap(function _callee5$(_context5) {
+      return _regeneratorRuntime.wrap(function _callee6$(_context6) {
         while (1) {
-          switch (_context5.prev = _context5.next) {
+          switch (_context6.prev = _context6.next) {
             case 0:
-              _context5.next = 2;
+              _context6.next = 2;
               return getFileContent(cssFilePath);
 
             case 2:
-              css = _context5.sent;
-              return _context5.abrupt("return", cssToJs(css));
+              css = _context6.sent;
+              return _context6.abrupt("return", cssToJs(css));
 
             case 4:
             case "end":
-              return _context5.stop();
+              return _context6.stop();
           }
         }
-      }, _callee5);
+      }, _callee6);
     }));
     return _cssFileToJs.apply(this, arguments);
   }
@@ -246,5 +246,41 @@ describe('main > postcssToJs', function () {
         }
       }
     }, _callee4);
+  })));
+  it('postcss syntax es6 from string and exist path',
+  /*#__PURE__*/
+  _asyncToGenerator(
+  /*#__PURE__*/
+  _regeneratorRuntime.mark(function _callee5() {
+    var filePath, js, newFilePath, result;
+    return _regeneratorRuntime.wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            filePath = path.resolve(__dirname, '../../assets/simpleJsStyle-es6.js');
+            _context5.next = 3;
+            return getFileContent(filePath);
+
+          case 3:
+            js = _context5.sent;
+            newFilePath = path.resolve(__dirname, '../../assets/simpleJsStyle-es6.svelte.js');
+            _context5.next = 7;
+            return postcssInstance.process(js, {
+              syntax: syntax,
+              from: newFilePath,
+              requireFromString: requireFromString
+            });
+
+          case 7:
+            result = _context5.sent;
+            assert.deepStrictEqual(JSON.parse(result.css), simpleJsStyle);
+            assert.strictEqual(result.css, JSON.stringify(simpleJsStyle, null, 4));
+
+          case 10:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5);
   })));
 });

@@ -1,4 +1,7 @@
 module.exports = {
+	"ignore": [
+		"**/assets/**/*.svelte.js"
+	],
 	"presets": [
 		[
 			"@babel/preset-env",
@@ -15,6 +18,6 @@ module.exports = {
 		"@babel/plugin-proposal-optional-chaining",
 		"@babel/plugin-proposal-throw-expressions",
 
-		["@babel/plugin-proposal-class-properties", { "loose": true }],
+		["@babel/plugin-proposal-class-properties", {"loose": true}],
 	]
 }
