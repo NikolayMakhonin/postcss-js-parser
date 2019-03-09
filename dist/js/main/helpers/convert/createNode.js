@@ -17,6 +17,7 @@ var _declaration = _interopRequireDefault(require("postcss/lib/declaration"));
 var _comment = _interopRequireDefault(require("postcss/lib/comment"));
 
 /* eslint-disable prefer-template,no-extra-parens */
+// eslint-disable-next-line no-unused-vars
 function getSource(name, valueOrNodes) {
   // const obj = name
   // 	? {[name]: valueOrNodes}

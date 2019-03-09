@@ -93,16 +93,16 @@ describe('main > helpers > convert > jsToNodes', function () {
 				nodes: [{
 					level  : 1,
 					comment: 'comment',
-					parent: true
+					parent : true
 				}]
 			},
 			{
 				level: 0,
 				name : 'prop2',
 				nodes: [{
-					level: 1,
-					name : 'prop3',
-					value: 'value3',
+					level : 1,
+					name  : 'prop3',
+					value : 'value3',
 					parent: true
 				}]
 			}])
@@ -117,7 +117,7 @@ describe('main > helpers > convert > jsToNodes', function () {
 					{
 						level  : 1,
 						comment: 'comment',
-						parent: true
+						parent : true
 					}
 				]
 			},
@@ -130,15 +130,15 @@ describe('main > helpers > convert > jsToNodes', function () {
 						name : 'prop2',
 						nodes: [
 							{
-								level: 2,
-								name : 'prop3',
-								value: 'value3',
+								level : 2,
+								name  : 'prop3',
+								value : 'value3',
 								parent: true
 							},
 							{
-								level: 2,
-								name : 'prop4',
-								value: 'value4',
+								level : 2,
+								name  : 'prop4',
+								value : 'value4',
 								parent: true
 							}
 						],

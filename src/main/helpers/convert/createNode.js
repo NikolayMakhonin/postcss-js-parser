@@ -4,6 +4,7 @@ import Rule from 'postcss/lib/rule'
 import Declaration from 'postcss/lib/declaration'
 import Comment from 'postcss/lib/comment'
 
+// eslint-disable-next-line no-unused-vars
 function getSource(name, valueOrNodes) {
 	// const obj = name
 	// 	? {[name]: valueOrNodes}
