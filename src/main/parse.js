@@ -3,16 +3,35 @@ import {parseNode} from './helpers/convert/parseNode'
 import {jsToPostcss} from './helpers/convert/convertPostcssJs'
 
 export function parse(jsContent, options) {
-	// eslint-disable-next-line global-require
-	let jsModule = options.requireFromString
+	const jsModuleOrPromise = options.requireFromString
 		? options.requireFromString(jsContent, options.from)
 		: require(options.from)
 
-	if (jsModule.__esModule === true && typeof jsModule.default !== 'undefined') {
-		jsModule = jsModule.default
+	return promiseThenSync(
+		jsModuleOrPromise,
+		jsModule => {
+			if (jsModule.__esModule === true && typeof jsModule.default !== 'undefined') {
+				return jsModule.default
+			}
+
+			return jsModule
+		},
+		jsModule => jsToPostcss(jsModule, parseNode)
+	)
+}
+
+function promiseThenSync(promise, ...next) {
+	if (promise instanceof Promise) {
+		return promise
+			.then(o => promiseThenSync(o, ...next))
 	}
 
-	return jsToPostcss(jsModule, parseNode)
+	if (next.length) {
+		promise = next.shift()(promise)
+		return promiseThenSync(promise, ...next)
+	}
+
+	return promise
 }
 
 export default parse

@@ -1,3 +1,8 @@
+1.0.5 / 2019-03-09
+===================
+
+  * Add support async `require` or `requireFromString`
+  
 1.0.4 / 2019-03-09
 ===================
 
