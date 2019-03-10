@@ -1,11 +1,73 @@
+import _regeneratorRuntime from "@babel/runtime/regenerator";
+import _asyncToGenerator from "@babel/runtime/helpers/asyncToGenerator";
 import { parse } from '../../../main/parse';
 import postcss from 'postcss';
-import postcssParse from 'postcss/lib/parse';
 describe('main > main', function () {
   var postcssInstance = postcss();
   it('postcss', function () {
     postcssInstance.process();
   });
+  xit('postcss async require',
+  /*#__PURE__*/
+  _asyncToGenerator(
+  /*#__PURE__*/
+  _regeneratorRuntime.mark(function _callee2() {
+    var result;
+    return _regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.next = 2;
+            return postcssInstance.process('var color = \'red\'; {x: { color: color }}', {
+              parser: parse,
+              from: 'file.js',
+              requireFromString: function () {
+                var _requireFromString = _asyncToGenerator(
+                /*#__PURE__*/
+                _regeneratorRuntime.mark(function _callee() {
+                  return _regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                      switch (_context.prev = _context.next) {
+                        case 0:
+                          _context.next = 2;
+                          return new Promise(function (resolve) {
+                            setTimeout(resolve, 10000);
+                          });
+
+                        case 2:
+                          return _context.abrupt("return", {
+                            x: {
+                              color: 'blue'
+                            }
+                          });
+
+                        case 3:
+                        case "end":
+                          return _context.stop();
+                      }
+                    }
+                  }, _callee);
+                }));
+
+                function requireFromString() {
+                  return _requireFromString.apply(this, arguments);
+                }
+
+                return requireFromString;
+              }()
+            });
+
+          case 2:
+            result = _context2.sent;
+            console.log(result.css);
+
+          case 4:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2);
+  })));
   it('base', function () {// const node = {
     // 	nodes : [],
     // 	type  : 'root',

@@ -12,14 +12,27 @@ var _convertPostcssJs = require("./helpers/convert/convertPostcssJs");
 
 /* eslint-disable global-require */
 function parse(jsContent, options) {
-  // eslint-disable-next-line global-require
-  let jsModule = options.requireFromString ? options.requireFromString(jsContent, options.from) : require(options.from);
+  const jsModuleOrPromise = options.requireFromString ? options.requireFromString(jsContent, options.from) : require(options.from);
+  return promiseThenSync(jsModuleOrPromise, jsModule => {
+    if (jsModule.__esModule === true && typeof jsModule.default !== 'undefined') {
+      return jsModule.default;
+    }
 
-  if (jsModule.__esModule === true && typeof jsModule.default !== 'undefined') {
-    jsModule = jsModule.default;
+    return jsModule;
+  }, jsModule => (0, _convertPostcssJs.jsToPostcss)(jsModule, _parseNode.parseNode));
+}
+
+function promiseThenSync(promise, ...next) {
+  if (promise instanceof Promise) {
+    return promise.then(o => promiseThenSync(o, ...next));
   }
 
-  return (0, _convertPostcssJs.jsToPostcss)(jsModule, _parseNode.parseNode);
+  if (next.length) {
+    promise = next.shift()(promise);
+    return promiseThenSync(promise, ...next);
+  }
+
+  return promise;
 }
 
 var _default = parse;

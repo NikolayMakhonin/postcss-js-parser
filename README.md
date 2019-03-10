@@ -19,6 +19,10 @@ When I have such a powerful tool at hand as JavaScript - it would not be wise no
 
 Styles written in JavaScript are not so convenient, but when extending even a small project, the power of the JavaScript language fully compensated for this drawback.
 
+# Demo
+
+[Converter](https://nikolaymakhonin.github.io/postcss-js-syntax-editor/) between [Postcss-Js-Syntax](https://github.com/NikolayMakhonin/postcss-js-syntax) and CSS
+
 # Description
 
 You can use your JS modules for compile CSS files.

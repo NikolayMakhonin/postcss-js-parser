@@ -1,12 +1,27 @@
 import {parse} from '../../../main/parse'
 import postcss from 'postcss'
-import postcssParse from 'postcss/lib/parse'
 
 describe('main > main', function () {
 	const postcssInstance = postcss()
 
 	it('postcss', function () {
 		postcssInstance.process()
+	})
+
+	xit('postcss async require', async function () {
+		const result = await postcssInstance.process('var color = \'red\'; {x: { color: color }}', {
+			parser: parse,
+			from  : 'file.js',
+			async requireFromString() {
+				await new Promise(resolve => {
+					setTimeout(resolve, 10000)
+				})
+
+				return {x: {color: 'blue'}}
+			}
+		})
+
+		console.log(result.css)
 	})
 
 	it('base', function () {
