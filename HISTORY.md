@@ -1,3 +1,8 @@
+1.0.7 / 2019-03-09
+===================
+
+  * Added warning about use integer property names
+  
 1.0.6 / 2019-03-09
 ===================
 

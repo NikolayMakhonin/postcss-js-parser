@@ -79,9 +79,16 @@ function* jsToNodesGenerator(jsObjectOrArray, createNodeFunc, level, addedObject
 
     if (typeof jsObjectOrArray === 'object') {
       const nextLevel = level + 1;
+      let numberPropertyWarn;
 
       for (const name in jsObjectOrArray) {
         if (Object.prototype.hasOwnProperty.call(jsObjectOrArray, name)) {
+          // eslint-disable-next-line eqeqeq
+          if (!numberPropertyWarn && Math.floor(name) == name) {
+            numberPropertyWarn = true;
+            console.warn('Warning: Property name = ' + name + '. It seems that you used spread operator on array inside object: { ...["value1", "value2"] }. Note that JavaScript does not preserve the order of objects properties whose names are integers. You should refrain from using such property names.\r\nYour object: ', jsObjectOrArray);
+          }
+
           const node = createNodeFunc(name, jsToNodes(jsObjectOrArray[name], createNodeFunc, nextLevel, addedObjects), level);
 
           if (node) {

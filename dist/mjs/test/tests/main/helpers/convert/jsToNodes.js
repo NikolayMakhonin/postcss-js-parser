@@ -1,3 +1,5 @@
+import _defineProperty from "@babel/runtime/helpers/defineProperty";
+
 /* eslint-disable object-property-newline,array-bracket-newline */
 import { jsToNodes } from '../../../../../main/helpers/convert/jsToNodes';
 describe('main > helpers > convert > jsToNodes', function () {
@@ -72,6 +74,32 @@ describe('main > helpers > convert > jsToNodes', function () {
     assert.deepStrictEqual(nodes, expectedNodes, errorMessage);
   }
 
+  it('Property names as inteners', function () {
+    testJsToNodes({
+      '0': 'value',
+      '1': 'value'
+    }, [{
+      level: 0,
+      name: '0',
+      value: 'value'
+    }, {
+      level: 0,
+      name: '1',
+      value: 'value'
+    }]);
+    testJsToNodes({
+      '1': 'value'
+    }, [{
+      level: 0,
+      name: '1',
+      value: 'value'
+    }]);
+    testJsToNodes(_defineProperty({}, -1, 'value'), [{
+      level: 0,
+      name: '-1',
+      value: 'value'
+    }]);
+  });
   it('null', function () {
     testJsToNodes(undefined, undefined);
     testJsToNodes(null, null);

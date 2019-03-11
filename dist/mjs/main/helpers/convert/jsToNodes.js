@@ -60,7 +60,7 @@ export function jsToNodes(jsObjectOrArray, createNodeFunc, level, addedObjects) 
 }
 
 function jsToNodesGenerator(jsObjectOrArray, createNodeFunc, level, addedObjects) {
-  var _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, item, node, nextLevel, name, _node;
+  var _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, item, node, nextLevel, numberPropertyWarn, name, _node;
 
   return _regeneratorRuntime.wrap(function jsToNodesGenerator$(_context) {
     while (1) {
@@ -195,7 +195,7 @@ function jsToNodesGenerator(jsObjectOrArray, createNodeFunc, level, addedObjects
 
         case 48:
           if (!(_typeof(jsObjectOrArray) === 'object')) {
-            _context.next = 61;
+            _context.next = 62;
             break;
           }
 
@@ -204,49 +204,55 @@ function jsToNodesGenerator(jsObjectOrArray, createNodeFunc, level, addedObjects
 
         case 51:
           if ((_context.t3 = _context.t2()).done) {
-            _context.next = 60;
+            _context.next = 61;
             break;
           }
 
           name = _context.t3.value;
 
           if (!Object.prototype.hasOwnProperty.call(jsObjectOrArray, name)) {
-            _context.next = 58;
+            _context.next = 59;
             break;
+          }
+
+          // eslint-disable-next-line eqeqeq
+          if (!numberPropertyWarn && Math.floor(name) == name) {
+            numberPropertyWarn = true;
+            console.warn('Warning: Property name = ' + name + '. It seems that you used spread operator on array inside object: { ...["value1", "value2"] }. Note that JavaScript does not preserve the order of objects properties whose names are integers. You should refrain from using such property names.\r\nYour object: ', jsObjectOrArray);
           }
 
           _node = createNodeFunc(name, jsToNodes(jsObjectOrArray[name], createNodeFunc, nextLevel, addedObjects), level);
 
           if (!_node) {
-            _context.next = 58;
+            _context.next = 59;
             break;
           }
 
-          _context.next = 58;
+          _context.next = 59;
           return _node;
 
-        case 58:
+        case 59:
           _context.next = 51;
           break;
 
-        case 60:
+        case 61:
           return _context.abrupt("return");
 
-        case 61:
-          _context.next = 63;
+        case 62:
+          _context.next = 64;
           return jsObjectOrArray;
 
-        case 63:
-          _context.prev = 63;
+        case 64:
+          _context.prev = 64;
           addedObjects.delete(jsObjectOrArray);
-          return _context.finish(63);
+          return _context.finish(64);
 
-        case 66:
+        case 67:
         case "end":
           return _context.stop();
       }
     }
-  }, _marked, null, [[11,, 63, 66], [17, 35, 39, 47], [40,, 42, 46]]);
+  }, _marked, null, [[11,, 64, 67], [17, 35, 39, 47], [40,, 42, 46]]);
 }
 
 export default {
