@@ -43,8 +43,8 @@ describe('main > helpers > convert > createNode', function () {
       _iteratorError = err;
     } finally {
       try {
-        if (!_iteratorNormalCompletion && _iterator.return != null) {
-          _iterator.return();
+        if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+          _iterator["return"]();
         }
       } finally {
         if (_didIteratorError) {
@@ -70,10 +70,10 @@ describe('main > helpers > convert > createNode', function () {
     // testCreateNode('prop', null, 0, null, null)
   });
   it('comment', function () {
-    assert.throws(function () {
+    assert["throws"](function () {
       return createNode(null, '@', 0);
     }, Error);
-    assert.throws(function () {
+    assert["throws"](function () {
       return createNode(null, '/', 0);
     }, Error);
     testCreateNode(null, '// comment text ', 0, Object.assign(new Comment(), {
@@ -138,10 +138,10 @@ describe('main > helpers > convert > createNode', function () {
         between: ''
       }
     }));
-    assert.throws(function () {
+    assert["throws"](function () {
       return createNode('@import module\r\n.js ', 'x', null, 0);
     }, Error);
-    assert.throws(function () {
+    assert["throws"](function () {
       return createNode('@import module\r\n.js ', {}, null, 0);
     }, Error);
     testCreateNode('@import module\r\n.js ', null, 0, Object.assign(new AtRule(), {

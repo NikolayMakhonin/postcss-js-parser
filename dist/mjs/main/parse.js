@@ -4,8 +4,8 @@ import { jsToPostcss } from './helpers/convert/convertPostcssJs';
 export function parse(jsContent, options) {
   var jsModuleOrPromise = options.requireFromString ? options.requireFromString(jsContent, options.from) : require(options.from);
   return promiseThenSync(jsModuleOrPromise, function (jsModule) {
-    if (jsModule.__esModule === true && typeof jsModule.default !== 'undefined') {
-      return jsModule.default;
+    if (jsModule.__esModule === true && typeof jsModule["default"] !== 'undefined') {
+      return jsModule["default"];
     }
 
     return jsModule;

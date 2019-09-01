@@ -14,7 +14,7 @@ describe('main > helpers > convert > parseNode', function () {
     testParseNode({}, null, null);
   });
   it('root', function () {
-    assert.throws(function () {
+    assert["throws"](function () {
       return parseNode({
         type: 'root'
       });

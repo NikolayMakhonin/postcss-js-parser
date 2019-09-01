@@ -1,3 +1,9 @@
+1.0.8 / 2019-09-01
+===================
+
+  * Upgraded dev dependencies except mocha to latest versions
+  * Upgraded @babel/runtime to 7.5.5
+  
 1.0.7 / 2019-03-09
 ===================
 

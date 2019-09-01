@@ -47,8 +47,8 @@ describe('main > helpers > convert > jsToNodes', function () {
           _iteratorError = err;
         } finally {
           try {
-            if (!_iteratorNormalCompletion && _iterator.return != null) {
-              _iterator.return();
+            if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+              _iterator["return"]();
             }
           } finally {
             if (_didIteratorError) {
@@ -245,7 +245,7 @@ describe('main > helpers > convert > jsToNodes', function () {
     jss.prop1[1] = jss.prop1[0];
     jsToNodes(jss, createNode);
     jss.prop1[1].prop2.prop3[1] = jss;
-    assert.throws(function () {
+    assert["throws"](function () {
       return jsToNodes(jss, createNode);
     }, Error);
   });

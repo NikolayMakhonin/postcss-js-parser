@@ -21,8 +21,8 @@ describe('main > main', function () {
             return postcssInstance.process('var color = \'red\'; {x: { color: color }}', {
               parser: parse,
               from: 'file.js',
-              requireFromString: function () {
-                var _requireFromString = _asyncToGenerator(
+              requireFromString: function requireFromString() {
+                return _asyncToGenerator(
                 /*#__PURE__*/
                 _regeneratorRuntime.mark(function _callee() {
                   return _regeneratorRuntime.wrap(function _callee$(_context) {
@@ -47,14 +47,8 @@ describe('main > main', function () {
                       }
                     }
                   }, _callee);
-                }));
-
-                function requireFromString() {
-                  return _requireFromString.apply(this, arguments);
-                }
-
-                return requireFromString;
-              }()
+                }))();
+              }
             });
 
           case 2:

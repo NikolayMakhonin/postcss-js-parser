@@ -29,8 +29,8 @@ export function addParentToChildNodes(node) {
     _iteratorError = err;
   } finally {
     try {
-      if (!_iteratorNormalCompletion && _iterator.return != null) {
-        _iterator.return();
+      if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+        _iterator["return"]();
       }
     } finally {
       if (_didIteratorError) {
@@ -51,8 +51,8 @@ export function jsToNodes(jsObjectOrArray, createNodeFunc, level, addedObjects) 
     }
   }
 
-  for (var _i = 0; _i < result.length; _i++) {
-    var node = result[_i];
+  for (var _i = 0, _result = result; _i < _result.length; _i++) {
+    var node = _result[_i];
     addParentToChildNodes(node);
   }
 
@@ -170,8 +170,8 @@ function jsToNodesGenerator(jsObjectOrArray, createNodeFunc, level, addedObjects
           _context.prev = 39;
           _context.prev = 40;
 
-          if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
-            _iterator2.return();
+          if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+            _iterator2["return"]();
           }
 
         case 42:
@@ -244,7 +244,7 @@ function jsToNodesGenerator(jsObjectOrArray, createNodeFunc, level, addedObjects
 
         case 64:
           _context.prev = 64;
-          addedObjects.delete(jsObjectOrArray);
+          addedObjects["delete"](jsObjectOrArray);
           return _context.finish(64);
 
         case 67:
